@@ -1,0 +1,15 @@
+<!doctype html>
+<html ng-app='phutball'>
+  <head>
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.4.8/angular.js'></script>
+    <script src='app.js'></script>
+    <link rel='stylesheet' href='app.css'>
+
+    <script src='board/board.directive.js'></script>
+    <link rel='stylesheet' href='board/board.directive.css'>
+  </head>
+  <body ng-controller='MainController as vm'>
+    <phutball-board></phutball-board>
+    <p>Turn: {{ vm.turn }}</p>
+  </body>
+</html>

@@ -1,0 +1,39 @@
+table {
+  border-collapse: collapse;
+}
+
+td {
+  border: 1px solid gray;
+  width: 21px;
+  height: 21px;
+  max-width: 21px;
+  max-height: 21px;
+  vertical-align: middle;
+  text-align: center;
+}
+
+.ball, .player {
+  display: inline-block;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 1px solid;
+
+  /* hack; text-align: center not working; because no content? */
+  position: relative;
+  top: 2px;
+}
+
+.ball {
+  border-color: lightgray;
+  background-color: lightgray;
+}
+
+.player {
+  border-color: darkgray;
+  background-color: darkgray;
+}
+
+.endzone {
+  background-color: #ff9999;
+}
