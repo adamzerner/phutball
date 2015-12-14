@@ -5,6 +5,7 @@
       ng-click='vm.makeMove(cell, $parent.$index, $index)'>
       <span ng-if="cell === 'ball'" class='ball'></span>
       <span ng-if="cell === 'player'" class='player'></span>
+      <span ng-if="cell === 'in progress'" class='in-progress'></span>
     </td>
   </tr>
 </table>

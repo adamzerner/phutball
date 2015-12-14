@@ -25,7 +25,7 @@ function MainController() {
       firstClick.apply(this, arguments);
     }
     else if (jumpInProgress) {
-      jump.apply(this, arguments);
+      inProgressJump.apply(this, arguments);
     }
   };
 
@@ -42,28 +42,42 @@ function MainController() {
       vm.changeTurn();
     }
     else if (cell === 'ball') {
-      jumpInProgress = true;
+      jumpInProgress = [ballPosition];
     }
     else {
       console.error('Click an empty space or the ball to move.');
     }
   };
 
-  function jump(cell, row, column) {
-    if (cell === 'player' || cell === 'ball') {
-      console.error("Can't jump to a populated space.");
+  function inProgressJump(cell, row, column) {
+    if (cell === 'ball') {
+      console.error("You need to jump to a new space.");
       return;
     }
 
-    if (!validJump(row, column)) {
-      console.error("Can't jump to that space.");
+    if (cell === 'player') {
+      if (validStep(row, column)) {
+        jumpInProgress.push([row, column]);
+        vm.board[row][column] = 'in progress';
+      }
+      return;
+    }
+
+    if (!validStep(row, column)) {
+      console.error('Invalid attempt.');
       return;
     }
 
     // remove jumped pieces
+    jumpInProgress.forEach(function(piece, index) {
+      var row = piece[0];
+      var column = piece[1];
+
+      vm.board[row][column] = undefined;
+    });
+    jumpInProgress = false;
 
     // move the ball
-    vm.board[ballPosition[0]][ballPosition[1]] = undefined;
     vm.board[row][column] = 'ball';
     ballPosition = [row, column];
 
@@ -78,10 +92,18 @@ function MainController() {
     jumpInProgress = false;
   }
 
-  function validJump(endRow, endColumn) {
-    // I was just getting up to graph traversal in my data structures studies :(
-    // This is bound to be imperfect
-    return true;
+  function validStep(nextRow, nextColumn) {
+    var previousPoint = jumpInProgress[jumpInProgress.length - 1];
+    var previousRow = previousPoint[0];
+    var previousColumn = previousPoint[1];
+
+    if (nextRow === previousRow && nextColumn === previousColumn) {
+      return false;
+    }
+    if (Math.abs(nextRow - previousRow) <= 1 && Math.abs(nextColumn - previousColumn) <= 1) {
+      return true
+    }
+    return false;
   }
 
   function initializeBoard() {
